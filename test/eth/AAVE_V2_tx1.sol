@@ -86,7 +86,7 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
         require(healthFactor < 1e18, "health factor should below 1 before liquidation");
 
         // 1744500000000 is not the best, I just change it and try again and again
-        uint256 flashloan_for_usdt = 1744500000000; 
+        uint256 flashloan_for_usdt = 2744500000000; 
         emit log_named_decimal_uint(
             "   Flashloan for USDT(WETH-USDT)", flashloan_for_usdt, 6
         );
@@ -100,7 +100,7 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
         pair[0] = address(WBTC);
         pair[1] = address(WETH);
 
-        console.log("           (swap: WBTC => WETH to myself)");
+        console.log("           (swap[uni_v2]: WBTC => WETH to myself)");
 
         // swap: wbtc => weth
         uniswap_router.swapExactTokensForTokens(my_wbtc_balance, 0, pair, address(this), type(uint64).max);
@@ -131,7 +131,7 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
     ) external override {
 
         USDT.approve(address(lending_pool), type(uint256).max); // prepare for swap
-        (uint112 reserves_wbtc, uint112 reserves_weth, ) = IUniswapV2Pair(msg.sender).getReserves();
+        (uint112 reserves_weth, uint112 reserves_usdt, ) = IUniswapV2Pair(msg.sender).getReserves();
 
         // false => get the underlying collateral asset: WBTC, not aWBTC
         // amount1 is the amount we want to liquidate
@@ -153,17 +153,20 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
         );
 
         WBTC.approve(address(uniswap_router), type(uint256).max);  // prepare for swap
-        address[] memory pair = new address[](2);
-        pair[0] = address(WBTC);
-        pair[1] = address(WETH);
+        address[] memory path = new address[](2);
+        path[0] = address(WBTC);
+        path[1] = address(WETH);
         // amount1 is the amount we flashloan
         // by getAmountIn(), we can caculate the WBTC
-        uint256 amount_plus_fee_in_amount0 = getAmountIn(amount1, reserves_wbtc, reserves_weth);
+        uint256 amount_plus_fee_in_amount0 = getAmountIn(amount1, reserves_weth, reserves_usdt);
 
-        console.log("           (swap: WBTC => WETH to pair, we can pay back WETH although we flashloan for USDT)");
+        console.log("           (swap[uni_v2]: WBTC => WETH to pair, we can pay back WETH although we flashloan for USDT)");
+
+        (uint112 reserves_WBTC, uint112 reserves_WETH, ) = IUniswapV2Pair(0xBb2b8038a1640196FbE3e38816F3e67Cba72D940).getReserves();
+
 
         // pay back flashloan: borrow USDT, pay WETH
-        uniswap_router.swapTokensForExactTokens(amount_plus_fee_in_amount0, type(uint256).max, pair, msg.sender, type(uint64).max);
+        uniswap_router.swapTokensForExactTokens(amount_plus_fee_in_amount0, type(uint256).max, path, msg.sender, type(uint64).max);
 
         my_wbtc_balance = WBTC.balanceOf(address(this));
         emit log_named_decimal_uint(
