@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "../interface.sol";
 
 // @tx hash: 0xac7df37a43fab1b130318bbb761861b8357650db2e2c6493b73d6da3d9581077
-// Profit ETH: 85.048539834763696741
+// @Profit : 85.048539834763696741 ETH
 
 contract LiquidationOperator is IUniswapV2Callee, Test {
 
@@ -17,7 +17,7 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
     IERC20 USDT = IERC20(0xdAC17F958D2ee523a2206206994597C13D831ec7);
     IERC20 WBTC = IERC20(0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599);
 
-    ICurvePool public curve_dai_usdc_usdt_prool = ICurvePool(0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7); // swap 
+    ICurvePool public curve_dai_usdc_usdt_pool = ICurvePool(0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7); // swap 
     ILendingPool public lending_pool = ILendingPool(0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9); // aave v2
     ISushiSwap_Pair public usdc_weth_pair = ISushiSwap_Pair(0x397FF1542f962076d0BFE58eA045FfA2d347ACa0); // flashloan
     ISushiSwapRouter02 public sushiswapRouter02 = ISushiSwapRouter02(0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F); // swap 

@@ -97,8 +97,6 @@ I discover 3 things finally:
 
 ##### tx1pro
 
-这一次的清算比tx1更多，获得了个85.048539834763696741ETH。
-
 This profit is more than tx1, we get 85.048539834763696741ETH.
 
 We use a better strategy:
