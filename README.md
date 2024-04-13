@@ -167,6 +167,26 @@ Before totalCollateralETH: 10630.629178806013179408
 
 #### Compound_V2
 
+##### tx1
+
+```
+Logs:
+  [Before] liquidity: 0.000000000000000000
+  [Before] shortfall: 26.392206940915889741
+  [Before] cETH: 0.00000000
+  [After] liquidity: 332.950243140081219857
+  [After] shortfall: 0.000000000000000000
+  [After] cETH: 88730.60279429
+```
+
+
+
+
+
+
+
+
+
 ### bsc
 
 

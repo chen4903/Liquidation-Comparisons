@@ -111,8 +111,8 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
         );
 
         // Swap: USDC => USDT. We use curve, because curve is born for stablecoin swap
-        USDC.approve(address(curve_dai_usdc_usdt_prool), type(uint256).max);
-        curve_dai_usdc_usdt_prool.exchange(1, 2, amount0, 0);
+        USDC.approve(address(curve_dai_usdc_usdt_pool), type(uint256).max);
+        curve_dai_usdc_usdt_pool.exchange(1, 2, amount0, 0);
 
         console.log("           (Swap[cureve, DAI_USDC_USDT]: USDC => USDT)");
         emit log_named_decimal_uint(
@@ -150,8 +150,6 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
         // Pay back flashloan plus fee
         WBTC.approve(address(sushiswapRouter02), type(uint256).max);  // prepare for swap
         (uint112 reserves_usdc, uint112 reserves_weth, ) = IUniswapV2Pair(msg.sender).getReserves();
-
-        (uint112 reserves_WBTC, uint112 reserves_WETH, ) = IUniswapV2Pair(0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58).getReserves();
 
         uint256 flashloan_amount_plus_fee_in_amount1 = getAmountIn(amount0, reserves_weth, reserves_usdc); 
         address[] memory path = new address[](2);

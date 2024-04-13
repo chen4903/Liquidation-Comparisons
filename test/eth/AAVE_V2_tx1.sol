@@ -162,9 +162,6 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
 
         console.log("           (swap[uni_v2]: WBTC => WETH to pair, we can pay back WETH although we flashloan for USDT)");
 
-        (uint112 reserves_WBTC, uint112 reserves_WETH, ) = IUniswapV2Pair(0xBb2b8038a1640196FbE3e38816F3e67Cba72D940).getReserves();
-
-
         // pay back flashloan: borrow USDT, pay WETH
         uniswap_router.swapTokensForExactTokens(amount_plus_fee_in_amount0, type(uint256).max, path, msg.sender, type(uint64).max);
 
