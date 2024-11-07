@@ -28,7 +28,15 @@ contract LiquidationOperator is IUniswapV2Callee, Test {
     }
 
     function test_liquidation() public {
-        (uint256 totalCollateralETH, uint256 totalDebtETH, uint256 availableBorrowsETH, uint256 currentLiquidationThreshold, uint256 ltv, uint256 healthFactor) = lending_pool.getUserAccountData(user_to_be_liquidated);
+        (
+        uint256 totalCollateralETH, 
+        uint256 totalDebtETH, 
+        uint256 availableBorrowsETH, 
+        uint256 currentLiquidationThreshold, 
+        uint256 ltv, 
+        uint256 healthFactor
+        ) = lending_pool.getUserAccountData(user_to_be_liquidated);
+        
         console.log();
         emit log_named_decimal_uint(
             "Before totalCollateralETH", totalCollateralETH, 18
